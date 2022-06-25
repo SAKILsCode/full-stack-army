@@ -84,6 +84,31 @@ class MyDB {
 		ticket.updatedAt = new Date();
 		return ticket;
 	}
+	
+	 /**
+	 * UPPPDATED LATER
+   	 * Update infos of all tickets by username
+   	 * @param {string} username
+  	 * @param {{username: string, price: number}} ticketBody
+   	 * @returns {Array<Ticket>}
+   	 */
+  	updateByUsername(username, ticketBody) {
+    		let index = 0;
+    		let updatedTickets = [];
+
+    		while (index < this.tickets.length) {
+      			const ticket = this.tickets[index];
+      			if (ticket.username !== username) continue;
+
+      			ticket.username = ticketBody.username ?? ticket.username;
+      			ticket.price = ticketBody.price ?? ticket.price;
+      			ticket.updatedAt = new Date();
+
+      			updatedTickets.push(ticket);
+      			index++;
+    		}
+    		return updatedTickets;
+  	}
 
 	/**
 	 * delete ticket from db
@@ -104,6 +129,26 @@ class MyDB {
 			return false;
 		}
 	}
+	
+	/**
+	* UPDATED LATER
+   	* Delete all ticket from DB by username
+   	* @param {string} username\
+   	* @returns {boolean}
+   	*/
+  	deleteByUsername(username) {
+    		let index = 0;
+    		while (index < this.tickets.length) {
+      			if (this.tickets[index].username !== username) {
+        			if (index === (this.tickets.length - 1)) return false;
+        			continue;
+      			}
+
+      			// this will always decrease one element of the "this.tickets" array
+      			this.tickets.splice(index, 1);
+    		}
+    		return true;
+  	}
 
 	/**
 	 * find winners
